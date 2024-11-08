@@ -643,6 +643,56 @@ function flatten(tree) {
     return accumulate_tree(x => list(x), append, null , tree);
 }
 
+function find(tree,item){
+    return is_null(tree)
+            ? false
+            : is_number(tree)
+            ? tree===item
+            : find(head(tree),item) 
+                || find(tail(tree),item);
+}
+
+function path(tree,item){
+    return equal(tree,item)
+            ? null
+            : find(tail(tree),item)
+            ? pair(tail,path(tail(tree),item))
+            : pair(head,path(head(tree),item));
+}
+/* -------------------------------------------------------------------------- */
+/*                           BINARY SEARCH TREES                              */
+/* -------------------------------------------------------------------------- */
+function insert(bst,item){
+    if (is_empty_tree(bst)){
+        return make_tree(item, make_empty_tree(), make_empty_tree());
+    } else {
+        if (item<entry(bst)){
+            return make_tree(entry(bst),insert(left_branch(bst),item),right_branch(bst));
+        } else if (item>entry(bst)){
+            return make_tree(entry(bst),left_branch(bst),insert(right_branch(bst),item));
+        } else{
+            return bst;
+        }
+    }
+}   
+
+
+function find(bst,name){
+    return is_empty_tree(bst)
+            ? false
+            : name === entry(bst)
+            ? true
+            : name<entry(bst)
+            ? find(left_branch(bst),name)
+            : find(right_branch(bst),name);
+}
+
+function smallest(bst){
+    return is_empty_tree(left_branch(bst))
+            ? entry(bst)
+            : smallest(left_branch(bst));
+}
+
 /* -------------------------------------------------------------------------- */
 /*                        DESTRUCTIVE LIST MANIPULATION                       */
 /* -------------------------------------------------------------------------- */
