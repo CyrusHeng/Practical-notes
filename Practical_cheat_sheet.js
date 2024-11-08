@@ -766,6 +766,24 @@ function string_length(s) {
 }
 
 /* -------------------------------------------------------------------------- */
+/*                                    Streams                                 */
+/* -------------------------------------------------------------------------- */
+function optimised_zip_stream(s1,s2){
+    return is_null(s1)
+        ? null
+        : pair(head(s1), 
+                        ()=> zip_stream(s2,stream_tail(s1)));
+}
+
+function add_streams(s1, s2) { 
+    return is_null(s1)
+        ? s2
+        : is_null(s2)
+            ? s1
+            : pair(head(s1) + head(s2),
+           () => add_streams(stream_tail(s1),
+                             stream_tail(s2)));
+/* -------------------------------------------------------------------------- */
 /*                                    MISC                                    */
 /* -------------------------------------------------------------------------- */
 
